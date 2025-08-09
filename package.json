@@ -1,0 +1,176 @@
+{
+  "name": "popnext",
+  "version": "0.0.1",
+  "description": "Popnext - A minimal Next.js utilities library (Work in Progress - Not Ready for Production)",
+  "license": "MIT",
+  "author": "akmalmzamri",
+  "homepage": "https://github.com/popspacemy/popnext#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/popspacemy/popnext.git"
+  },
+  "bugs": {
+    "url": "https://github.com/popspacemy/popnext/issues"
+  },
+  "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "default": "./dist/client/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "default": "./dist/core/index.js"
+    },
+    "./core/ai": {
+      "types": "./dist/core/ai/index.d.ts",
+      "default": "./dist/core/ai/index.js"
+    },
+    "./core/auth": {
+      "types": "./dist/core/auth/index.d.ts",
+      "default": "./dist/core/auth/index.js"
+    },
+    "./core/auth/client": {
+      "types": "./dist/core/auth/client.d.ts",
+      "default": "./dist/core/auth/client.js"
+    },
+    "./core/auth/schema": {
+      "types": "./dist/core/auth/schema.d.ts",
+      "default": "./dist/core/auth/schema.js"
+    },
+    "./core/context-store": {
+      "types": "./dist/core/context-store/index.d.ts",
+      "default": "./dist/core/context-store/index.js"
+    },
+    "./core/db": {
+      "types": "./dist/core/db/index.d.ts",
+      "default": "./dist/core/db/index.js"
+    },
+    "./core/logger": {
+      "types": "./dist/core/logger/index.d.ts",
+      "default": "./dist/core/logger/index.js"
+    },
+    "./core/metadata": {
+      "types": "./dist/core/metadata/index.d.ts",
+      "default": "./dist/core/metadata/index.js"
+    },
+    "./core/validators": {
+      "types": "./dist/core/validators/index.d.ts",
+      "default": "./dist/core/validators/index.js"
+    },
+    "./constants": {
+      "types": "./dist/constants/index.d.ts",
+      "default": "./dist/constants/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "default": "./dist/server/index.js"
+    },
+    "./server/middlewares": {
+      "types": "./dist/server/middlewares/index.d.ts",
+      "default": "./dist/server/middlewares/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "default": "./dist/schemas/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "build:tsc": "npx tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm run lint && pnpm run ts:check && pnpm run build",
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "commit": "cz",
+    "release": "semantic-release",
+    "sort-package-json": "npx sort-package-json",
+    "ts:check": "npx tsc --noEmit"
+  },
+  "dependencies": {
+    "pino": "9.6.0",
+    "sonner": "2.0.3",
+    "validator": "13.15.15"
+  },
+  "devDependencies": {
+    "@ai-sdk/provider": "^2.0.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.0",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.7",
+    "@types/validator": "^13.15.0",
+    "ai": "5.0.0",
+    "better-auth": "^1.3.4",
+    "commitizen": "^4.3.1",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "date-fns": "^3.0.0",
+    "date-fns-tz": "^3.2.0",
+    "drizzle-orm": "0.44.4",
+    "next": "^15.0.0",
+    "postgres": "^3.4.5",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "semantic-release": "^24.2.7",
+    "short-uuid": "^5.2.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "zod": "3.25.76"
+  },
+  "peerDependencies": {
+    "@ai-sdk/provider": "^2.0.0",
+    "ai": "5.0.0",
+    "better-auth": "^1.3.4",
+    "date-fns": "^3.0.0",
+    "date-fns-tz": "^3.2.0",
+    "drizzle-orm": "0.44.4",
+    "next": "^15.0.0",
+    "pino": "^9.6.0",
+    "postgres": "^3.4.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "short-uuid": "^5.2.0",
+    "validator": "^13.15.0",
+    "zod": "^3.25.76"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
