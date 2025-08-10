@@ -1,6 +1,6 @@
 {
   "name": "popnext",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Popnext - A minimal Next.js utilities library (Work in Progress - Not Ready for Production)",
   "license": "MIT",
   "author": "akmalmzamri",
@@ -107,7 +107,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "prepare": "pnpm run build",
-    "prepublishOnly": "pnpm run lint && pnpm run ts:check && pnpm run build",
+    "prepublishOnly": "pnpm run ts:check && pnpm run build",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "commit": "cz",

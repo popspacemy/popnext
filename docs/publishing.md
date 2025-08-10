@@ -33,6 +33,7 @@ pnpm run commit
 ```
 
 This opens guided prompts for:
+
 - **Type**: feat, fix, docs, style, refactor, test, chore
 - **Scope**: Optional (e.g., auth, db, middleware)
 - **Description**: Brief description of changes
@@ -51,6 +52,7 @@ If you prefer manual commits, follow this format:
 ```
 
 **Examples:**
+
 ```bash
 git commit -m "feat: add new authentication middleware"
 git commit -m "fix: resolve database connection timeout"
@@ -62,23 +64,25 @@ git commit -m "feat!: redesign auth system (BREAKING CHANGE)"
 
 Semantic-release automatically determines version bumps based on commit types:
 
-| Commit Type | Version Bump | Example |
-|-------------|--------------|---------|
-| `feat:` | **Minor** | 0.1.0 → 0.2.0 |
-| `fix:` | **Patch** | 0.1.0 → 0.1.1 |
-| `BREAKING CHANGE:` or `!` | **Major** | 0.1.0 → 1.0.0 |
-| `docs:`, `style:`, `chore:` | **None** | No release |
+| Commit Type                 | Version Bump | Example       |
+| --------------------------- | ------------ | ------------- |
+| `feat:`                     | **Minor**    | 0.1.0 → 0.2.0 |
+| `fix:`                      | **Patch**    | 0.1.0 → 0.1.1 |
+| `BREAKING CHANGE:` or `!`   | **Major**    | 0.1.0 → 1.0.0 |
+| `docs:`, `style:`, `chore:` | **None**     | No release    |
 
 ## Release Branches
 
 ### Master Branch (Production)
+
 - **Trigger**: Push to `master`
 - **Result**: Full release with version bump
 - **Changelog**: Automatically updated
 - **NPM**: Published with `latest` tag
 
 ### Beta Branch (Pre-release)
-- **Trigger**: Push to `beta` 
+
+- **Trigger**: Push to `beta`
 - **Result**: Pre-release version (e.g., 0.1.0-beta.1)
 - **NPM**: Published with `beta` tag
 
@@ -98,6 +102,7 @@ When you push to `master`, the CI/CD pipeline automatically:
 ### Daily Development
 
 1. **Make Changes**
+
    ```bash
    # Make your code changes
    pnpm run lint:fix
@@ -106,10 +111,11 @@ When you push to `master`, the CI/CD pipeline automatically:
    ```
 
 2. **Commit with Conventional Format**
+
    ```bash
    # Interactive (recommended)
    pnpm run commit
-   
+
    # Or manual
    git commit -m "feat: add new user authentication"
    ```
@@ -165,6 +171,7 @@ npm install popnext@0.1.0
 When ready for v1.0.0:
 
 1. **Update Package Metadata**
+
    ```json
    {
      "description": "A minimal Next.js utilities library",
@@ -173,6 +180,7 @@ When ready for v1.0.0:
    ```
 
 2. **Create Breaking Change Commit**
+
    ```bash
    git commit -m "feat!: stable v1.0.0 API (BREAKING CHANGE)"
    ```
@@ -185,25 +193,27 @@ When ready for v1.0.0:
 ## Troubleshooting
 
 ### Release Not Triggered
+
 - Check commit message format follows conventional commits
 - Ensure push is to `master` or `beta` branch
 - Verify GitHub Actions are enabled
 
 ### Build Failures
+
 - All linting and type checks must pass
 - Check `.github/workflows/build.yml` logs
 - Fix issues and push again
 
 ## Quick Reference
 
-| Action | Command |
-|--------|---------|
-| Interactive commit | `pnpm run commit` |
-| Manual release | `pnpm run release` |
-| Check formatting | `pnpm run prettier:check` |
-| Fix formatting | `pnpm run prettier:fix` |
-| Type check | `pnpm run ts:check` |
-| Build | `pnpm run build` |
+| Action             | Command                   |
+| ------------------ | ------------------------- |
+| Interactive commit | `pnpm run commit`         |
+| Manual release     | `pnpm run release`        |
+| Check formatting   | `pnpm run prettier:check` |
+| Fix formatting     | `pnpm run prettier:fix`   |
+| Type check         | `pnpm run ts:check`       |
+| Build              | `pnpm run build`          |
 
 ## Benefits of New System
 
