@@ -5,18 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-## 1.0.0-beta.1 (2025-08-10)
-
-### ✨ Features
-
-* first commit ([8d94a9e](https://github.com/popspacemy/popnext/commit/8d94a9e7c8e6411619e96e141eb9b233f14f4850))
-
-### 🐛 Bug Fixes
-
-* remove pnpm lint from prepublish script ([bc1d54f](https://github.com/popspacemy/popnext/commit/bc1d54f582154769f6b43729cb7f5ae20049a85d))
-* revert changelog ([e9740c7](https://github.com/popspacemy/popnext/commit/e9740c7c35a32ffe3c9a671c715dc879ae7e5a58))
-
 ## [Unreleased]
 
 ### Added
