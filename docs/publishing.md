@@ -174,7 +174,7 @@ When ready for v1.0.0:
 
    ```json
    {
-     "description": "A minimal Next.js utilities library",
+     "description": "A opinionated but minimal Next.js utilities library",
      "keywords": ["nextjs", "react", "typescript", "utilities"]
    }
    ```
