@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.1.0-beta.1](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.1...v0.1.0-beta.1) (2025-08-14)
+
+### ✨ Features
+
+* **core/ai:** change model type to use LanguageModel to support AI Gateway ([d3ca43b](https://github.com/popspacemy/popnext/commit/d3ca43bd4ca3dca69819731111cb4b88d4282e2a))
+
 ## [0.0.1-beta.1](https://github.com/popspacemy/popnext/compare/v0.0.0...v0.0.1-beta.1) (2025-08-10)
 
 ### 🐛 Bug Fixes
