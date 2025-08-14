@@ -1,4 +1,5 @@
-import { generateObject, streamObject, type LanguageModel, type LanguageModelUsage } from "ai"
+import type { GenerationOnFinishParams } from "@/types"
+import { generateObject, streamObject, type LanguageModel } from "ai"
 import { ZodType } from "zod/v4"
 
 interface BaseAIParams<T> {
@@ -12,7 +13,7 @@ interface BaseAIParams<T> {
 }
 
 interface StreamParams<T> extends BaseAIParams<T> {
-  onFinish?: (result: T | undefined, error: unknown, usage: LanguageModelUsage) => Promise<void>
+  onFinish?: (params: GenerationOnFinishParams<T>) => Promise<void>
   onError?: (error: unknown) => Promise<void>
 }
 
@@ -24,7 +25,7 @@ export const streamResponse = async <T>(params: StreamParams<T>) => {
     ...params,
     onFinish: async ({ object, error, usage }) => {
       if (params.onFinish) {
-        await params.onFinish(object as T | undefined, error, usage)
+        await params.onFinish({ result: object as T, error, usage })
       }
     },
     onError: async (error) => {
