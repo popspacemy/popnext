@@ -1,5 +1,4 @@
-import { LanguageModelV2 } from "@ai-sdk/provider"
-import { generateObject, LanguageModelUsage, streamObject } from "ai"
+import { generateObject, streamObject, type LanguageModel, type LanguageModelUsage } from "ai"
 import { ZodType } from "zod/v4"
 
 interface BaseAIParams<T> {
@@ -7,7 +6,7 @@ interface BaseAIParams<T> {
   prompt: string
   schema: ZodType
   mode: "json" | "auto" | "tool"
-  model: LanguageModelV2
+  model: LanguageModel
   temperature: number
   maxTokens: number
 }
