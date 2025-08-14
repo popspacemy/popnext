@@ -1,6 +1,6 @@
 {
   "name": "popnext",
-  "version": "0.1.0-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "Popnext - A minimal Next.js utilities library (Work in Progress - Not Ready for Production)",
   "license": "MIT",
   "author": "akmalmzamri",
