@@ -4,7 +4,7 @@ import { uuid } from "short-uuid"
 import { ErrorSource, RequestSource } from "../../constants/operations"
 import { ErrorDetails } from "../../types/errors"
 
-export interface Details {
+export interface AdditionalDetails {
   errorSource?: ErrorSource
   message?: string
   [key: string]: unknown
@@ -45,20 +45,20 @@ const baseLogger: Logger =
         level: "debug",
       })
 
-export const logEvent = (
+const logEvent = (
   logger = baseLogger,
   eventName: string,
   data: Record<string, unknown>,
-  details?: Details
+  details?: AdditionalDetails
 ) => {
   logger.info({ event: eventName, ...data, details })
 }
 
-export const logError = (
+const logError = (
   logger = baseLogger,
   message: string,
   error: ErrorDetails,
-  details?: Details
+  details?: AdditionalDetails
 ) => {
   logger.error({
     message,
@@ -92,9 +92,9 @@ export const createLogger = (context: Context) => {
       const mergedContext = { ...currentBindings.context, ...context }
       return logger.setBindings({ context: mergedContext })
     },
-    info: (eventName: string, data: Record<string, unknown>, details?: Details) =>
+    info: (eventName: string, data: Record<string, unknown>, details?: AdditionalDetails) =>
       logEvent(logger, eventName, data, details),
-    error: (message: string, error: ErrorDetails, details?: Details) =>
+    error: (message: string, error: ErrorDetails, details?: AdditionalDetails) =>
       logError(logger, message, error, details),
   }
 }

@@ -1,4 +1,4 @@
-import type { GenerationOnFinishParams } from "@/types"
+import type { GenerationOnError, GenerationOnFinish } from "@/types"
 import { generateObject, streamObject, type LanguageModel } from "ai"
 import { ZodType } from "zod/v4"
 
@@ -13,8 +13,8 @@ interface BaseAIParams<T> {
 }
 
 interface StreamParams<T> extends BaseAIParams<T> {
-  onFinish?: (params: GenerationOnFinishParams<T>) => Promise<void>
-  onError?: (error: unknown) => Promise<void>
+  onFinish?: GenerationOnFinish<T>
+  onError?: GenerationOnError
 }
 
 /**
