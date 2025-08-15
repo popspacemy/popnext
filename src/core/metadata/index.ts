@@ -2,7 +2,7 @@ import { validateDateSchema, validateIdSchema } from "../validators"
 
 export const metadataSchema = {
   id: validateIdSchema(),
-  creatorId: validateIdSchema(false),
+  userId: validateIdSchema(false),
   createdDate: validateDateSchema(),
   modifiedDate: validateDateSchema(),
 }
@@ -14,7 +14,7 @@ export function getMetadataValidators() {
 export function getMetadataFieldsToOmit() {
   return {
     id: true,
-    creatorId: true,
+    userId: true,
     createdDate: true,
     modifiedDate: true,
   } as const
