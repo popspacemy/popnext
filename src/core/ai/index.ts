@@ -21,7 +21,7 @@ interface StreamParams<T> extends BaseAIParams<T> {
  * Stream AI response as partial object while they are being generated
  */
 export const streamResponse = async <T>(params: StreamParams<T>) => {
-  const result = streamObject({
+  return streamObject({
     ...params,
     onFinish: async ({ object, error, usage }) => {
       if (params.onFinish) {
@@ -34,8 +34,6 @@ export const streamResponse = async <T>(params: StreamParams<T>) => {
       }
     },
   })
-
-  return result.toTextStreamResponse()
 }
 
 /**
