@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.7](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.6...v0.0.1-beta.7) (2025-08-15)
+
+### 🐛 Bug Fixes
+
+* **core/ai:** rework streamResponse by returnning the stream instance instead of the stream itself ([6c5702e](https://github.com/popspacemy/popnext/commit/6c5702e7b4376b22ea0739d6efeca6fc59a1938f))
+
 ## [0.0.1-beta.6](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.5...v0.0.1-beta.6) (2025-08-15)
 
 ### 🐛 Bug Fixes
