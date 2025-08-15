@@ -116,6 +116,7 @@
     "ts:check": "npx tsc --noEmit"
   },
   "dependencies": {
+    "@better-auth-kit/seed": "^1.0.12",
     "pino": "9.6.0",
     "sonner": "2.0.3",
     "validator": "13.15.15"
