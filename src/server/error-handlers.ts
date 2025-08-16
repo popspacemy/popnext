@@ -52,12 +52,12 @@ export function formatError(error: unknown, errorDef?: ErrorDefinition): ErrorDe
 
 export async function extractContextFromRequest(
   request: NextRequest,
-  requestParams: Record<string, unknown>
+  requestParams?: Record<string, unknown>
 ): Promise<ErrorContext> {
   return {
     requestQuery: Object.fromEntries(request.nextUrl.searchParams),
-    requestParams,
     requestBody: await request.json(),
+    requestParams,
   }
 }
 
@@ -81,13 +81,28 @@ export function handleServiceError(error: ErrorDetails, context: ErrorContext = 
   }
 }
 
-export function handleApiError(error: ErrorResponse): NextResponse {
+export function handleApiError(error: ErrorResponse | null | undefined): NextResponse {
+  if (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error,
+      },
+      { status: error.status }
+    )
+  }
+
+  const errorDef = ERROR.INTERNAL.UNHANDLED
   return NextResponse.json(
     {
       success: false,
-      error,
+      error: {
+        code: errorDef.code,
+        message: errorDef.message,
+        status: errorDef.status,
+      },
     },
-    { status: error.status }
+    { status: errorDef.status }
   )
 }
 
