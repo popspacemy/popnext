@@ -82,23 +82,29 @@ export function handleApiError(error: ErrorDetails, context: ErrorContext): Next
   })
 
   if (error instanceof ZodError) {
-    return NextResponse.json({
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          code: error.code,
+          message: error.publicMessage,
+          status: error.status,
+        },
+        details: error.issues,
+      },
+      { status: error.status }
+    )
+  }
+
+  return NextResponse.json(
+    {
       success: false,
       error: {
         code: error.code,
-        message: error.message,
+        message: error.publicMessage,
         status: error.status,
       },
-      details: error.issues,
-    })
-  }
-
-  return NextResponse.json({
-    success: false,
-    error: {
-      code: error.code,
-      message: error.message,
-      status: error.status,
     },
-  })
+    { status: error.status }
+  )
 }
