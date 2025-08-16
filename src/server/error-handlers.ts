@@ -50,14 +50,19 @@ export function formatError(error: unknown, errorDef?: ErrorDefinition): ErrorDe
   }
 }
 
-export async function extractContextFromRequest(
-  request: NextRequest,
-  requestParams?: Record<string, unknown>
-): Promise<ErrorContext> {
+export function formatErrorContext({
+  request,
+  params,
+  payload,
+}: {
+  request: NextRequest
+  params?: Record<string, unknown>
+  payload?: Record<string, unknown>
+}): ErrorContext {
   return {
     requestQuery: Object.fromEntries(request.nextUrl.searchParams),
-    requestBody: await request.json(),
-    requestParams,
+    requestBody: payload,
+    requestParams: params,
   }
 }
 
