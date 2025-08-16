@@ -1,7 +1,9 @@
+import { StreamObjectResult } from "ai"
+
 import { ErrorResponse } from "./errors"
 
 export interface BaseServiceResult {
-  success: boolean
+  success: boolean | null
   error?: ErrorResponse | null
 }
 
@@ -26,4 +28,13 @@ export type GetDataResult<T> = BaseServiceResult & {
 
 export type SaveDataResult<T> = BaseServiceResult & {
   data: T | null
+}
+
+export type StreamGenerationResult = BaseServiceResult & {
+  isStreaming: boolean
+  data: StreamObjectResult<unknown, unknown, never> | null
+}
+
+export type GetGenerationResult<T> = BaseServiceResult & {
+  data: T | unknown
 }

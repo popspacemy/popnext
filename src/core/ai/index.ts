@@ -1,27 +1,12 @@
-import type { GenerationOnError, GenerationOnFinish } from "@/types"
-import { generateObject, streamObject, type LanguageModel } from "ai"
-import { ZodType } from "zod/v4"
+import { generateObject as _generateObject, streamObject as _streamObject } from "ai"
 
-interface BaseAIParams<T> {
-  system: string
-  prompt: string
-  schema: ZodType
-  mode: "json" | "auto" | "tool"
-  model: LanguageModel
-  temperature: number
-  maxTokens: number
-}
-
-interface StreamParams<T> extends BaseAIParams<T> {
-  onFinish?: GenerationOnFinish<T>
-  onError?: GenerationOnError
-}
+import type { BaseAIParams, StreamParams } from "../../types"
 
 /**
  * Stream AI response as partial object while they are being generated
  */
-export const streamResponse = async <T>(params: StreamParams<T>) => {
-  return streamObject({
+export const streamObject = async <T>(params: StreamParams<T>) => {
+  return _streamObject({
     ...params,
     onFinish: async ({ object, error, usage }) => {
       if (params.onFinish) {
@@ -39,11 +24,6 @@ export const streamResponse = async <T>(params: StreamParams<T>) => {
 /**
  * Generate AI response as a complete object
  */
-export const generateResponse = async <T>(params: BaseAIParams<T>) => {
-  try {
-    const { object } = await generateObject(params)
-    return object
-  } catch (error) {
-    throw error
-  }
+export const generateObject = <T>(params: BaseAIParams<T>) => {
+  return _generateObject(params)
 }
