@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { ZodError } from "zod/v4"
 
 import { ERROR, ErrorContext, ErrorDefinition } from "../constants/errors"
 import { getLogger } from "../core/context-store"
-import { ErrorDetails, ServiceError } from "../types/errors"
+import { ErrorDetails, ErrorResponse, ServiceError } from "../types/errors"
 
 export function formatError(error: unknown, errorDef?: ErrorDefinition): ErrorDetails {
   const defaultError = ERROR.INTERNAL.UNEXPECTED
@@ -50,6 +50,17 @@ export function formatError(error: unknown, errorDef?: ErrorDefinition): ErrorDe
   }
 }
 
+export async function extractContextFromRequest(
+  request: NextRequest,
+  requestParams: Record<string, unknown>
+): Promise<ErrorContext> {
+  return {
+    requestQuery: Object.fromEntries(request.nextUrl.searchParams),
+    requestParams,
+    requestBody: await request.json(),
+  }
+}
+
 export function handleServiceError(error: ErrorDetails, context: ErrorContext = {}): ServiceError {
   const logger = getLogger()
   logger.error(error.publicMessage, error, {
@@ -70,41 +81,43 @@ export function handleServiceError(error: ErrorDetails, context: ErrorContext = 
   }
 }
 
-export function handleApiError(error: ErrorDetails, context: ErrorContext): NextResponse {
+export function handleApiError(error: ErrorResponse): NextResponse {
+  return NextResponse.json(
+    {
+      success: false,
+      error,
+    },
+    { status: error.status }
+  )
+}
+
+export function handleApiException(error: unknown, context: ErrorContext): NextResponse {
+  const errorDef = ERROR.INTERNAL.UNEXPECTED
+  const errorDetails = {
+    name: errorDef.name,
+    code: errorDef.code,
+    message: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack : undefined,
+    publicMessage: errorDef.message,
+    status: errorDef.status,
+  }
+
   const logger = getLogger()
-  logger.error(error.publicMessage, error, {
-    status: error.status,
-    params: context.params,
+  logger.error(errorDef.message, errorDetails, {
     requestParams: context.requestParams,
     requestQuery: context.requestQuery,
     requestBody: context.requestBody,
-    ...context.additionalContext,
   })
-
-  if (error instanceof ZodError) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: error.code,
-          message: error.publicMessage,
-          status: error.status,
-        },
-        details: error.issues,
-      },
-      { status: error.status }
-    )
-  }
 
   return NextResponse.json(
     {
       success: false,
       error: {
-        code: error.code,
-        message: error.publicMessage,
-        status: error.status,
+        code: errorDef.code,
+        message: errorDef.message,
+        status: errorDef.status,
       },
     },
-    { status: error.status }
+    { status: errorDef.status }
   )
 }

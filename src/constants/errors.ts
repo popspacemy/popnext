@@ -1,9 +1,27 @@
 export interface ErrorContext {
+  /**
+   * Params pass to the function
+   */
   params?: Record<string, unknown>
+  /**
+   * URL params (dynamic route segments) pass to the request
+   */
   requestParams?: Record<string, unknown>
+  /**
+   * URL query pass to the request
+   */
   requestQuery?: Record<string, unknown>
+  /**
+   * Validated data pass to the request
+   */
   requestData?: Record<string, unknown>
+  /**
+   * Request body pass to the request
+   */
   requestBody?: Record<string, unknown>
+  /**
+   * Additional context pass to the request
+   */
   additionalContext?: Record<string, unknown>
 }
 
