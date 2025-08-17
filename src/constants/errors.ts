@@ -35,6 +35,7 @@ export interface ErrorDefinition {
 export const ERROR_NAME = {
   Auth: "AUTH_ERROR",
   Validation: "VALIDATION_ERROR",
+  Credit: "CREDIT_ERROR",
   Subscription: "SUBSCRIPTION_ERROR",
   Resource: "RESOURCE_ERROR",
   AI: "AI_ERROR",
@@ -75,20 +76,47 @@ export const ERROR = {
     } satisfies ErrorDefinition,
   },
 
-  SUBSCRIPTION: {
+  CREDIT: {
+    CREATE_FAILED: {
+      name: ERROR_NAME.Credit,
+      code: "CREDIT_001",
+      status: 500,
+      message: "Failed to create credit",
+    } satisfies ErrorDefinition,
+    UPDATE_FAILED: {
+      name: ERROR_NAME.Credit,
+      code: "CREDIT_002",
+      status: 500,
+      message: "Failed to update credit",
+    } satisfies ErrorDefinition,
     MISSING_CREDIT_DETAILS: {
-      name: ERROR_NAME.Subscription,
-      code: "SUB_001",
+      name: ERROR_NAME.Credit,
+      code: "CREDIT_003",
       status: 402,
       message: "Missing credit details",
     } satisfies ErrorDefinition,
     INSUFFICIENT_CREDITS: {
-      name: ERROR_NAME.Subscription,
-      code: "SUB_002",
+      name: ERROR_NAME.Credit,
+      code: "CREDIT_004",
       status: 402,
       message: "Insufficient credits",
     } satisfies ErrorDefinition,
-    REQUIRES_PRO: {
+  },
+
+  SUBSCRIPTION: {
+    CREATE_FAILED: {
+      name: ERROR_NAME.Subscription,
+      code: "SUB_001",
+      status: 500,
+      message: "Failed to create subscription",
+    } satisfies ErrorDefinition,
+    UPDATE_FAILED: {
+      name: ERROR_NAME.Subscription,
+      code: "SUB_002",
+      status: 500,
+      message: "Failed to update subscription",
+    } satisfies ErrorDefinition,
+    PRO_REQUIRED: {
       name: ERROR_NAME.Subscription,
       code: "SUB_003",
       status: 402,
