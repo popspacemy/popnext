@@ -4,8 +4,9 @@ import { PgColumn, PgInsertValue, PgTable, PgUpdateSetSource } from "drizzle-orm
 import { ERROR } from "../constants/errors"
 import { getLogger } from "../core/context-store"
 import { db } from "../core/db"
-import { formatError, handleServiceError } from "../server/error-handlers"
+import { handleServiceError } from "../server/error-handlers"
 import { GetAllDataResult, GetDataResult, SaveDataResult } from "../types/services"
+import { formatError } from "../utils/errors"
 
 interface TableWithId {
   id: PgColumn<any>

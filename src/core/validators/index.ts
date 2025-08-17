@@ -1,4 +1,3 @@
-import { PgTableWithColumns, TableConfig } from "drizzle-orm/pg-core"
 import { isMobilePhone } from "validator"
 import { z } from "zod/v4"
 

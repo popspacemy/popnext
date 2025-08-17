@@ -1,3 +1,5 @@
+import { RequestSource } from "../constants/operations"
+import { HttpMethod } from "./requests"
 import { Prettify } from "./utils"
 
 // A generic middleware type
@@ -37,6 +39,12 @@ export interface BaseRequestContext {
   correlationId?: string
   // Required. Will be used for logging and monitoring
   tags?: string[]
+  // Optional. Used to track request source
+  requestSource?: RequestSource
+  // Optional. Used to track request endpoint
+  endpoint?: string
+  // Optional. Used to track request method
+  method?: HttpMethod
 }
 
 /**

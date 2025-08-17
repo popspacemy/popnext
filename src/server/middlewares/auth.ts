@@ -5,7 +5,8 @@ import { auth } from "../../core/auth"
 import { getLogger } from "../../core/context-store"
 import { AuthUser } from "../../types/auth"
 import { Middleware } from "../../types/request-handlers"
-import { formatError, handleServiceError } from "../error-handlers"
+import { formatError } from "../../utils/errors"
+import { handleServiceError } from "../error-handlers"
 
 type Input = {}
 

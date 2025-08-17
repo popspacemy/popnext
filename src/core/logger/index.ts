@@ -1,23 +1,8 @@
 import pino, { Logger } from "pino"
 import { uuid } from "short-uuid"
 
-import { ErrorSource, RequestSource } from "../../constants/operations"
 import { ErrorDetails } from "../../types/errors"
-
-export interface AdditionalDetails {
-  errorSource?: ErrorSource
-  message?: string
-  [key: string]: unknown
-}
-
-export interface Context {
-  correlationId?: string
-  userId?: string
-  requestHandler?: string
-  requestSource?: RequestSource
-  operation?: string
-  [key: string]: unknown
-}
+import { AdditionalDetails, Context } from "../../types/loggers"
 
 const commonConfig = {
   timestamp: pino.stdTimeFunctions.isoTime,

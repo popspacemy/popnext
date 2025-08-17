@@ -1,7 +1,8 @@
 import { ERROR } from "../../constants/errors"
 import { getLogger } from "../../core/context-store"
 import { ServiceHandlerContext } from "../../types/request-handlers"
-import { formatError, handleServiceError } from "../error-handlers"
+import { formatError } from "../../utils/errors"
+import { handleServiceError } from "../error-handlers"
 
 /**
  * Error handling middleware that catches any uncaught errors in the request chain.

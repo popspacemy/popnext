@@ -9,7 +9,13 @@ export const withLogger = async <T extends BaseRequestContext>(
   const correlationId = context.correlationId || crypto.randomUUID()
   const tags = context.tags || []
 
-  const logger = createRequestLogger({ correlationId, tags })
+  const logger = createRequestLogger({
+    correlationId,
+    requestSource: context.requestSource,
+    endpoint: context.endpoint,
+    method: context.method,
+    tags,
+  })
 
   // Create the context with logger
   const contextWithLogger = {

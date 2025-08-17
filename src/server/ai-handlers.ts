@@ -1,7 +1,8 @@
 import { ERROR } from "../constants"
 import { generateObject, streamObject } from "../core/ai"
-import { formatError, handleServiceError } from "../server/error-handlers"
+import { handleServiceError } from "../server/error-handlers"
 import { BaseAIParams, GetGenerationResult, StreamGenerationResult, StreamParams } from "../types"
+import { formatError } from "../utils/errors"
 
 export const streamAiGeneration = async <T>(
   params: StreamParams<T>

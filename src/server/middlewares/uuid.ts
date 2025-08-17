@@ -2,7 +2,8 @@ import { ERROR } from "../../constants/errors"
 import { getLogger } from "../../core/context-store"
 import { Middleware } from "../../types/request-handlers"
 import { toLongUuid } from "../../utils/common"
-import { formatError, handleServiceError } from "../error-handlers"
+import { formatError } from "../../utils/errors"
+import { handleServiceError } from "../error-handlers"
 
 type Input = {
   params: {
