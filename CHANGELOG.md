@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.15](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.14...v0.0.1-beta.15) (2025-08-19)
+
+### ✨ Features
+
+* add extractValuesFromConstants ([d47c645](https://github.com/popspacemy/popnext/commit/d47c6459f759cee9385f7c4c33ebe16982f926aa))
+
 ## [0.0.1-beta.14](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.13...v0.0.1-beta.14) (2025-08-17)
 
 ### ✨ Features
