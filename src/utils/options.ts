@@ -11,6 +11,15 @@ export const extractValuesFromOptions = <T extends readonly { readonly value: st
 ): T[number]["value"][] => arr.map((item) => item.value)
 
 /**
+ * Helper function to extract values from constant objects
+ */
+export function extractValuesFromConstants<T extends Record<string, string>, V extends T[keyof T]>(
+  constObj: T
+): V[] {
+  return Object.values(constObj) as V[]
+}
+
+/**
  * Helper function to create an enum-like object from an options object
  */
 export const createEnumFromOptions = <T extends readonly { readonly value: string }[]>(
