@@ -1,5 +1,5 @@
 import { count, eq, getTableName, sql, SQL } from "drizzle-orm"
-import { PgColumn, PgInsertValue, PgTable, PgUpdateSetSource } from "drizzle-orm/pg-core"
+import { PgColumn, PgInsertValue, PgTable, PgUpdateSetSource, PgTransaction } from "drizzle-orm/pg-core"
 
 import { ERROR } from "../constants/errors"
 import { getLogger } from "../core/context-store"
@@ -43,6 +43,16 @@ interface DeleteRecordParams<T extends PgTable & TableWithId> {
   table: T
   id?: string
   filterCondition?: SQL<unknown>
+}
+
+// Transaction-related types
+type TransactionOperation<T = any> = (tx: PgTransaction<any, any, any>) => Promise<T>
+
+interface TransactionResult<T = any> {
+  success: boolean
+  data?: T
+  error?: string
+  details?: any
 }
 
 export const getRecordCount = async <T extends PgTable>(
@@ -243,6 +253,9 @@ export const executeQuery = async ({ query }: { query: string }): Promise<unknow
     })
   }
 }
+
+// Transaction utilities - expose the raw transaction for maximum flexibility
+export const transaction = db.transaction
 
 // todo: create a wrapper for selectRecordWithFilter for filter other than id
 // todo: create a wrapper for selectRecordWithJoin
