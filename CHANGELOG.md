@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.16](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.15...v0.0.1-beta.16) (2025-08-19)
+
+### ✨ Features
+
+* **server/data-handlers:** export drizzle transaction ([981f516](https://github.com/popspacemy/popnext/commit/981f516653f8c57a77abbace46a2c72ad5563b21))
+
 ## [0.0.1-beta.15](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.14...v0.0.1-beta.15) (2025-08-19)
 
 ### ✨ Features
