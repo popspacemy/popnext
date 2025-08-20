@@ -1,5 +1,11 @@
 import { count, eq, getTableName, sql, SQL } from "drizzle-orm"
-import { PgColumn, PgInsertValue, PgTable, PgUpdateSetSource, PgTransaction } from "drizzle-orm/pg-core"
+import {
+  PgColumn,
+  PgInsertValue,
+  PgTable,
+  PgTransaction,
+  PgUpdateSetSource,
+} from "drizzle-orm/pg-core"
 
 import { ERROR } from "../constants/errors"
 import { getLogger } from "../core/context-store"
@@ -43,16 +49,6 @@ interface DeleteRecordParams<T extends PgTable & TableWithId> {
   table: T
   id?: string
   filterCondition?: SQL<unknown>
-}
-
-// Transaction-related types
-type TransactionOperation<T = any> = (tx: PgTransaction<any, any, any>) => Promise<T>
-
-interface TransactionResult<T = any> {
-  success: boolean
-  data?: T
-  error?: string
-  details?: any
 }
 
 export const getRecordCount = async <T extends PgTable>(
@@ -160,19 +156,19 @@ export const selectRecordById = async <T extends PgTable & TableWithId, R = any>
   }
 }
 
-export const insertRecord = async <T extends PgTable & TableWithId>({
-  table,
-  newRecord,
-}: InsertRecordParams<T>): Promise<SaveDataResult<{ id: string }>> => {
+// Base function that works with any database instance
+const baseInsertRecord = async <T extends PgTable & TableWithId>(
+  dbInstance: DbLike,
+  { table, newRecord }: InsertRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
   const logger = getLogger()
   logger.setContext({ operation: "insertRecord" })
 
   const baseResult = { data: null }
-
   let query
 
   try {
-    query = db.insert(table).values(newRecord).returning({ id: table.id })
+    query = dbInstance.insert(table).values(newRecord).returning({ id: table.id })
     const [result] = await query
     return { success: true, data: result }
   } catch (error) {
@@ -185,22 +181,25 @@ export const insertRecord = async <T extends PgTable & TableWithId>({
   }
 }
 
-export const updateRecord = async <T extends PgTable & TableWithId>({
-  table,
-  id,
-  updatedRecord,
-  filterCondition,
-}: UpdateRecordParams<T>): Promise<SaveDataResult<{ id: string }>> => {
+export const insertRecord = async <T extends PgTable & TableWithId>(
+  params: InsertRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
+  return baseInsertRecord(db, params)
+}
+
+const baseUpdateRecord = async <T extends PgTable & TableWithId>(
+  dbInstance: DbLike,
+  { table, id, updatedRecord, filterCondition }: UpdateRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
   const logger = getLogger()
   logger.setContext({ operation: "updateRecord" })
 
   const baseResult = { data: null }
-
   let query
 
   try {
     const condition = filterCondition ? filterCondition : eq(table.id, id)
-    query = db.update(table).set(updatedRecord).where(condition).returning({ id: table.id })
+    query = dbInstance.update(table).set(updatedRecord).where(condition).returning({ id: table.id })
     const [result] = await query
     return { success: true, data: result }
   } catch (error) {
@@ -213,21 +212,25 @@ export const updateRecord = async <T extends PgTable & TableWithId>({
   }
 }
 
-export const deleteRecord = async <T extends PgTable & TableWithId>({
-  table,
-  id,
-  filterCondition,
-}: DeleteRecordParams<T>): Promise<SaveDataResult<{ id: string }>> => {
+export const updateRecord = async <T extends PgTable & TableWithId>(
+  params: UpdateRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
+  return baseUpdateRecord(db, params)
+}
+
+const baseDeleteRecord = async <T extends PgTable & TableWithId>(
+  dbInstance: DbLike,
+  { table, id, filterCondition }: DeleteRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
   const logger = getLogger()
   logger.setContext({ operation: "deleteRecord" })
 
   const baseResult = { data: null }
-
   let query
 
   try {
     const condition = filterCondition ? filterCondition : eq(table.id, id)
-    query = db.delete(table).where(condition).returning({ id: table.id })
+    query = dbInstance.delete(table).where(condition).returning({ id: table.id })
     const [result] = await query
     return { success: true, data: result }
   } catch (error) {
@@ -238,6 +241,12 @@ export const deleteRecord = async <T extends PgTable & TableWithId>({
       }),
     }
   }
+}
+
+export const deleteRecord = async <T extends PgTable & TableWithId>(
+  params: DeleteRecordParams<T>
+): Promise<SaveDataResult<{ id: string }>> => {
+  return baseDeleteRecord(db, params)
 }
 
 export const executeQuery = async ({ query }: { query: string }): Promise<unknown> => {
@@ -254,8 +263,89 @@ export const executeQuery = async ({ query }: { query: string }): Promise<unknow
   }
 }
 
-// Transaction utilities - expose the raw transaction for maximum flexibility
-export const transaction = db.transaction
+// Transaction types and utilities
+type DbLike = typeof db | PgTransaction<any, any, any>
+
+interface TransactionOperation<T = any> {
+  (tx: DbLike): Promise<SaveDataResult<T>>
+}
+
+interface WithTransactionResult<T = any[]> {
+  success: boolean
+  data?: T
+  error?: any
+}
+
+// Transaction wrapper with cleaner API
+export const withTransaction = async <T = any[]>(
+  operations: TransactionOperation[]
+): Promise<WithTransactionResult<T>> => {
+  const logger = getLogger()
+  logger.setContext({ operation: "withTransaction" })
+
+  try {
+    const result = await db.transaction(async (tx) => {
+      const results: any[] = []
+
+      // Execute operations sequentially within the transaction
+      for (const operation of operations) {
+        const opResult = await operation(tx)
+
+        // If any operation fails, throw to rollback the transaction
+        if (!opResult.success) {
+          throw new Error(`Transaction operation failed: ${JSON.stringify(opResult)}`)
+        }
+
+        results.push(opResult.data)
+      }
+
+      return results
+    })
+
+    return { success: true, data: result as T }
+  } catch (error) {
+    const errorResult = handleServiceError(formatError(error, ERROR.INTERNAL.DB_ERROR), {
+      params: { operationsCount: operations.length },
+    })
+    return {
+      ...errorResult,
+      data: undefined,
+    }
+  }
+}
+
+// Transaction-aware utility functions
+export const txInsertRecord = <T extends PgTable & TableWithId>(
+  params: InsertRecordParams<T>
+): TransactionOperation<{ id: string }> => {
+  return async (tx: DbLike) => baseInsertRecord(tx, params)
+}
+
+export const txUpdateRecord = <T extends PgTable & TableWithId>(
+  params: UpdateRecordParams<T>
+): TransactionOperation<{ id: string }> => {
+  return async (tx: DbLike) => baseUpdateRecord(tx, params)
+}
+
+export const txDeleteRecord = <T extends PgTable & TableWithId>(
+  params: DeleteRecordParams<T>
+): TransactionOperation<{ id: string }> => {
+  return async (tx: DbLike) => baseDeleteRecord(tx, params)
+}
+
+// Convenience functions for common transaction patterns
+export const createTransaction = {
+  insert: txInsertRecord,
+  update: txUpdateRecord,
+  delete: txDeleteRecord,
+
+  // Custom operation wrapper
+  custom: <T = any>(
+    operation: (tx: DbLike) => Promise<SaveDataResult<T>>
+  ): TransactionOperation<T> => {
+    return operation
+  },
+}
 
 // todo: create a wrapper for selectRecordWithFilter for filter other than id
 // todo: create a wrapper for selectRecordWithJoin
