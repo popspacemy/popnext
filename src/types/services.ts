@@ -1,4 +1,5 @@
 import { StreamObjectResult } from "ai"
+import { PgTransaction } from "drizzle-orm/pg-core"
 
 import { ErrorResponse } from "./errors"
 
@@ -38,3 +39,5 @@ export type StreamGenerationResult = BaseServiceResult & {
 export type GetGenerationResult<T> = BaseServiceResult & {
   data: T | unknown
 }
+
+export type Transaction = PgTransaction<any, any, any>
