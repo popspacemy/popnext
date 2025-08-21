@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.18](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.17...v0.0.1-beta.18) (2025-08-21)
+
+### ✨ Features
+
+* **server/data-handlers:** rework transaction builder ([219e540](https://github.com/popspacemy/popnext/commit/219e5405c51e63031dc243aa687c0b46edabaf3d))
+
 ## [0.0.1-beta.17](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.16...v0.0.1-beta.17) (2025-08-20)
 
 ### ✨ Features
