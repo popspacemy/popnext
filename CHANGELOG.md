@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.19](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.18...v0.0.1-beta.19) (2025-08-22)
+
+### ✨ Features
+
+* **utils:** improve createEnumFromOptions to generate CamelCase output ([71448da](https://github.com/popspacemy/popnext/commit/71448da0f91df8e8aa0dcc974e37eb33d26f596b))
+
 ## [0.0.1-beta.18](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.17...v0.0.1-beta.18) (2025-08-21)
 
 ### ✨ Features
