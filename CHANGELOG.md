@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.20](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.19...v0.0.1-beta.20) (2025-08-22)
+
+### ✨ Features
+
+* **utils:** move options to constants ([12bcbf1](https://github.com/popspacemy/popnext/commit/12bcbf1632ec43e8343e9eb48bac4ce20f5076c0))
+
 ## [0.0.1-beta.19](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.18...v0.0.1-beta.19) (2025-08-22)
 
 ### ✨ Features
