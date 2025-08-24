@@ -35,7 +35,7 @@ export const authConfig = {
   },
 }
 
-const plugins = [
+export const plugins = [
   // This will add the session to the request and will also allow type inference for session.
   // However, this will not work when it's called from outside of Next.js (e.g. from DB seeding)
   nextCookies(),
