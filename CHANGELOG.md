@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.21](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.20...v0.0.1-beta.21) (2025-08-24)
+
+### 🐛 Bug Fixes
+
+* export better-auth plugins ([ae42193](https://github.com/popspacemy/popnext/commit/ae42193ce80245ce5217c1608f0adb926f20013a))
+
 ## [0.0.1-beta.20](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.19...v0.0.1-beta.20) (2025-08-22)
 
 ### ✨ Features
