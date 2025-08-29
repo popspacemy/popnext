@@ -1,4 +1,5 @@
 export * from "./common"
+export * from "./config"
 export * from "./constants"
 export * from "./contexts"
 export * from "./errors"

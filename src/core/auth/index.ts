@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { nextCookies } from "better-auth/next-js"
 
+import { loadPopnextConfig } from "../../utils/config"
 import { db } from "../db"
 import * as schema from "./schema"
 
@@ -41,4 +42,33 @@ export const plugins = [
   nextCookies(),
 ]
 
-export const auth: ReturnType<typeof betterAuth> = betterAuth({ ...authConfig, plugins })
+// Singleton auth instance
+let authInstance: ReturnType<typeof betterAuth> | null = null
+
+export function getAuth(): ReturnType<typeof betterAuth> {
+  if (!authInstance) {
+    const consumerConfig = loadPopnextConfig()
+
+    // Merge user config with base config
+    const mergedConfig = {
+      ...authConfig,
+      plugins: consumerConfig?.auth?.plugins
+        ? [...plugins, ...consumerConfig.auth.plugins]
+        : plugins,
+      hooks: consumerConfig?.auth?.hooks,
+      ...consumerConfig?.auth,
+    }
+
+    authInstance = betterAuth(mergedConfig)
+  }
+
+  return authInstance
+}
+
+// For backward compatibility - use the singleton instance
+export const auth: ReturnType<typeof betterAuth> = getAuth()
+
+// Reset function for testing
+export function resetAuthInstance() {
+  authInstance = null
+}
