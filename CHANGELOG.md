@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.0.1-beta.22](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.21...v0.0.1-beta.22) (2025-08-29)
+
+### ✨ Features
+
+* add support for popnext.config.ts ([a4ad9e4](https://github.com/popspacemy/popnext/commit/a4ad9e41be5c7c0cebc32f56a6985539959d8aa3))
+
 ## [0.0.1-beta.21](https://github.com/popspacemy/popnext/compare/v0.0.1-beta.20...v0.0.1-beta.21) (2025-08-24)
 
 ### 🐛 Bug Fixes
