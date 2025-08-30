@@ -6,6 +6,8 @@ import { loadPopnextConfig } from "../../utils/config"
 import { db } from "../db"
 import * as schema from "./schema"
 
+type AuthInstance = ReturnType<typeof betterAuth>
+
 // We export this config so that it can also be used by scripts,
 // in which case we can initialize better-auth without plugins
 export const authConfig = {
@@ -42,33 +44,89 @@ export const plugins = [
   nextCookies(),
 ]
 
-// Singleton auth instance
-let authInstance: ReturnType<typeof betterAuth> | null = null
+let authInstance: AuthInstance | null = null
 
-export function getAuth(): ReturnType<typeof betterAuth> {
-  if (!authInstance) {
-    const consumerConfig = loadPopnextConfig()
+/**
+ * Merges user configuration with base configuration
+ * Handles arrays (plugins) and objects (hooks) intelligently
+ */
+function mergeAuthConfig(baseConfig: any, userConfig: any) {
+  const merged = { ...baseConfig }
 
-    // Merge user config with base config
-    const mergedConfig = {
-      ...authConfig,
-      plugins: consumerConfig?.auth?.plugins
-        ? [...plugins, ...consumerConfig.auth.plugins]
-        : plugins,
-      hooks: consumerConfig?.auth?.hooks,
-      ...consumerConfig?.auth,
+  if (userConfig.plugins && Array.isArray(userConfig.plugins)) {
+    merged.plugins = [...plugins, ...userConfig.plugins]
+  } else {
+    merged.plugins = plugins
+  }
+
+  if (userConfig.hooks) {
+    merged.hooks = userConfig.hooks
+  }
+
+  Object.keys(userConfig).forEach((key) => {
+    if (key !== "hooks" && key !== "plugins") {
+      merged[key] = userConfig[key]
     }
+  })
 
-    authInstance = betterAuth(mergedConfig)
+  return merged
+}
+
+/**
+ * Gets or creates the auth instance with merged configuration
+ * This function handles lazy initialization and config merging
+ */
+export function getAuth(): AuthInstance {
+  if (!authInstance) {
+    const userConfig = loadPopnextConfig()
+
+    const finalConfig = userConfig?.auth
+      ? mergeAuthConfig(authConfig, userConfig.auth)
+      : { ...authConfig, plugins }
+
+    authInstance = betterAuth(finalConfig)
   }
 
   return authInstance
 }
 
-// For backward compatibility - use the singleton instance
-export const auth: ReturnType<typeof betterAuth> = getAuth()
+/**
+ * The main auth export using a Proxy for lazy initialization
+ * This ensures zero race conditions - every access triggers lazy loading
+ */
+export const auth: AuthInstance = new Proxy({} as AuthInstance, {
+  get(target, prop, receiver) {
+    const instance = getAuth()
+    const value = instance[prop as keyof AuthInstance]
 
-// Reset function for testing
+    // Bind functions to the instance to maintain 'this' context
+    if (typeof value === "function") {
+      return value.bind(instance)
+    }
+
+    return value
+  },
+
+  has(target, prop) {
+    const instance = getAuth()
+    return prop in instance
+  },
+
+  ownKeys(target) {
+    const instance = getAuth()
+    return Reflect.ownKeys(instance)
+  },
+
+  getOwnPropertyDescriptor(target, prop) {
+    const instance = getAuth()
+    return Reflect.getOwnPropertyDescriptor(instance, prop)
+  },
+}) as AuthInstance
+
+/**
+ * Reset function for testing - clears the singleton instance
+ * Use this in test setup to ensure clean state between tests
+ */
 export function resetAuthInstance() {
   authInstance = null
 }
